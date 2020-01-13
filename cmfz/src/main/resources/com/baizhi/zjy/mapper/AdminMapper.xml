@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!-- mapper映射文件 -->
+<mapper namespace="com.baizhi.zjy.dao.AdminDao">
+        <resultMap id="ad" type="com.baizhi.zjy.entity.Admin">
+            <id property="id" column="id"/>
+            <result property="username" column="username"/>
+            <result property="password" column="password"/>
+            <collection property="roles" ofType="com.baizhi.zjy.entity.Role">
+                <id property="id" column="id2"/>
+                <result property="roleName" column="roleName"/>
+                <collection property="resources" ofType="com.baizhi.zjy.entity.Resource">
+                    <id property="id" column="id4"/>
+                    <result property="resourceName" column="resource_name"/>
+                </collection>
+            </collection>
+        </resultMap>
+    <select id="queryAdminInfo" resultMap="ad">
+        select *
+        from admin a left join admin_role b on a.id=b.admin_id
+        left join role c on b.role_id=c.id
+        left join role_resource d on c.id=d.role_id
+        left join resource e on d.resource_id=e.id
+      where username=#{username}
+    </select>
+    <select id="selectby" parameterType="String" resultType="com.baizhi.zjy.entity.User">
+        select * from d_user where email=#{email}
+    </select>
+
+</mapper>
